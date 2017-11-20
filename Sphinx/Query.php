@@ -102,6 +102,11 @@ class Query
     protected $option = [];
 
     /**
+     * @var array
+     */
+    protected $facet = [];
+
+    /**
      * @var array|null
      */
     protected $results;
@@ -397,6 +402,20 @@ class Query
     }
 
     /**
+     * Add facet clause.
+     *
+     * @param string $facet
+     *
+     * @return Query
+     */
+    public function facet(string $facet)
+    {
+        $this->facet[] = $facet;
+
+        return $this;
+    }
+
+    /**
      * Quote value.
      *
      * @param mixed  $value
@@ -493,6 +512,10 @@ class Query
 
         if ($this->option) {
             $clauses[] = 'OPTION ' . $this->buildOption($this->option);
+        }
+
+        if ($this->facet) {
+            $clauses[] = 'FACET ' . implode(' ', $this->facet);
         }
 
         return trim(implode(' ', $clauses));
