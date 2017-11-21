@@ -112,6 +112,11 @@ class Query
     protected $results;
 
     /**
+     * @var array|null
+     */
+    protected $facetResults;
+
+    /**
      * @var integer
      */
     protected $numRows;
@@ -630,6 +635,23 @@ class Query
     }
 
     /**
+     * Returns an array of results.
+     *
+     * @return array
+     */
+    public function getFacetResults(): array
+    {
+        if (is_null($this->facetResults)) {
+            $this->execute();
+//            if ($this->queryBuilder) {
+//                $this->results = $this->applyQueryBuilder($this->results);
+//            }
+        }
+
+        return $this->facetResults;
+    }
+
+    /**
      * Executes query and returns number of affected rows.
      *
      * @return integer
@@ -648,6 +670,12 @@ class Query
                 $this->results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
             $this->numRows = $stmt->rowCount();
+
+            if(!empty($this->facet)) {
+                while ($stmt->nextRowset()) {
+                    $this->facetResults[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+            }
 
             $stmt->closeCursor();
         }
