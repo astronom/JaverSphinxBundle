@@ -399,7 +399,7 @@ class Query
      *
      * @return Query
      */
-    public function option(string $name, string $value)
+    public function option(string $name, string $value) : Query
     {
         $this->option[] = [$name, $value];
 
@@ -413,7 +413,7 @@ class Query
      *
      * @return Query
      */
-    public function facet(string $facet)
+    public function facet(string $facet) : Query
     {
         $this->facet[] = $facet;
 
@@ -520,7 +520,7 @@ class Query
         }
 
         if ($this->facet) {
-            $clauses[] = 'FACET ' . implode(' ', $this->facet);
+            $clauses[] = $this->buildFacets($this->facet);
         }
 
         return trim(implode(' ', $clauses));
@@ -617,6 +617,25 @@ class Query
     }
 
     /**
+     * Builds facet clause.
+     *
+     * @param array $facets
+     * @return string
+     * @internal param array $options
+     *
+     */
+    protected function buildFacets(array $facets): string
+    {
+        $pieces = [];
+
+        foreach ($facets as $facet) {
+            $pieces[] = 'FACET '.$facet;
+        }
+
+        return implode(' ', $pieces);
+    }
+
+    /**
      * Returns an array of results.
      *
      * @return array
@@ -641,7 +660,7 @@ class Query
      */
     public function getFacetResults(): array
     {
-        if (is_null($this->facetResults)) {
+        if (null === $this->facetResults) {
             $this->execute();
 //            if ($this->queryBuilder) {
 //                $this->results = $this->applyQueryBuilder($this->results);
