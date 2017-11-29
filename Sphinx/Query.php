@@ -662,6 +662,8 @@ class Query
     {
         if (null === $this->facetResults) {
             $this->execute();
+            return $this->facetResults;
+
 //            if ($this->queryBuilder) {
 //                $this->results = $this->applyQueryBuilder($this->results);
 //            }
@@ -691,6 +693,7 @@ class Query
             $this->numRows = $stmt->rowCount();
 
             if(!empty($this->facet)) {
+                $this->facetResults = [];
                 while ($stmt->nextRowset()) {
                     $this->facetResults[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
