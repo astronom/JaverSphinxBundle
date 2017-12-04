@@ -127,6 +127,11 @@ class Query
     protected $metadata;
 
     /**
+     * @var array|null
+     */
+    protected $indexDescription;
+
+    /**
      * Query constructor.
      *
      * @param PDO          $connection
@@ -658,7 +663,7 @@ class Query
      *
      * @return array
      */
-    public function getFacetResults(): array
+    public function getFacetResults(): ?array
     {
         if (null === $this->facetResults) {
             $this->execute();
@@ -874,5 +879,26 @@ class Query
     public function __toString()
     {
         return $this->getQuery();
+    }
+
+    /**
+     * @todo moth to other class
+     * @param string $name
+     * @param string $like
+     *
+     * @return array|null
+     */
+    public function describeIndex(string $name, ?string $like = null) : ?array
+    {
+        $this->indexDescription = [];
+        $stmt = $this->createStatement(sprintf('DESC %s LIKE %s', $name, $this->quoteValue($like)));
+
+        if ($stmt->execute()) {
+            $this->indexDescription = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+            $stmt->closeCursor();
+        }
+
+        return $this->indexDescription;
+
     }
 }
