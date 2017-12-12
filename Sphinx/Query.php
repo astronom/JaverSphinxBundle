@@ -415,12 +415,24 @@ class Query
      * Add facet clause.
      *
      * @param string $facet
+     * @param null|string $alias
      *
      * @return Query
+     *
+     * @throws \InvalidArgumentException
      */
-    public function facet(string $facet) : Query
+    public function facet(string $facet, ?string $alias = null) : Query
     {
-        $this->facet[] = $facet;
+        if(null !== $alias) {
+            if(isset($this->facet[$alias])) {
+                throw new \InvalidArgumentException(
+                    sprintf('Facet with alias %s already exist in list %s',
+                        $alias, implode(', ', array_keys($this->facet))));
+            }
+            $this->facet[$alias] = $facet;
+        } else {
+            $this->facet[] = $facet;
+        }
 
         return $this;
     }
@@ -699,8 +711,16 @@ class Query
 
             if(!empty($this->facet)) {
                 $this->facetResults = [];
-                while ($stmt->nextRowset()) {
-                    $this->facetResults[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($this->facet as $alias => $facet) {
+                    if(!$stmt->nextRowset()) {
+                        break;
+                    }
+
+                    if(\is_string($alias)) {
+                        $this->facetResults[ $alias ] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } else {
+                        $this->facetResults[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    }
                 }
             }
 
