@@ -112,9 +112,9 @@ class Query
     protected $results;
 
     /**
-     * @var array|null
+     * @var array
      */
-    protected $facetResults;
+    protected $facetResults = [];
 
     /**
      * @var integer
@@ -675,9 +675,9 @@ class Query
      *
      * @return array
      */
-    public function getFacetResults(): ?array
+    public function getFacetResults(): array
     {
-        if (null === $this->facetResults) {
+        if (count($this->facetResults) === 0) {
             $this->execute();
             return $this->facetResults;
 
