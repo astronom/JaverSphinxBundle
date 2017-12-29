@@ -109,4 +109,12 @@ class SphinxLogger
     {
         return $this->queriesTime;
     }
+
+    public function reset()
+    {
+        $this->queries = [];
+        $this->queriesCount = 0;
+        $this->queriesTime = 0;
+        $this->queriesRows = 0;
+    }
 }
