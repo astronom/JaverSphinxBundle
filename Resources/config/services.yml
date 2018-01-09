@@ -16,6 +16,7 @@ parameters:
 services:
     sphinx:
         class: "%sphinx.manager.class%"
+        public: true
         arguments:
             - "@sphinx.logger"
             - "%javer_sphinx.host%"

@@ -3,6 +3,7 @@
 namespace Javer\SphinxBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -30,5 +31,7 @@ class JaverSphinxExtension extends Extension
         $container->setParameter('javer_sphinx.config_path', $config['config_path']);
         $container->setParameter('javer_sphinx.data_dir', $config['data_dir']);
         $container->setParameter('javer_sphinx.searchd_path', $config['searchd_path']);
+
+        $container->setAlias('Javer\SphinxBundle\Sphinx\Manager', new Alias('sphinx'), true);
     }
 }
