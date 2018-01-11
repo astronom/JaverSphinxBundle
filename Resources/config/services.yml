@@ -36,10 +36,11 @@ services:
 
     sphinx.data_collector:
         class: "%sphinx.data_collector.class%"
+        public: false
         arguments:
             - "@sphinx.logger"
         tags:
-            - { name: data_collector, template: "JaverSphinxBundle:Collector:sphinx.html.twig", id: sphinx }
+            - { name: data_collector, template: "@JaverSphinx/Collector/sphinx.html.twig", id: sphinx }
 
     sphinx.daemon:
         class: "%sphinx.daemon.class%"
