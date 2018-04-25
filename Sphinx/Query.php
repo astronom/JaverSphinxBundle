@@ -902,7 +902,6 @@ class Query
     }
 
     /**
-     * @todo moth to other class
      * @param string $name
      * @param string $like
      *
@@ -914,7 +913,7 @@ class Query
         $stmt = $this->createStatement(sprintf('DESC %s LIKE %s', $name, $this->quoteValue($like)));
 
         if ($stmt->execute()) {
-            $this->indexDescription = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+            $this->indexDescription = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
         }
 
