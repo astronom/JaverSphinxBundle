@@ -85,6 +85,16 @@ class SphinxDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
+    public function reset()
+    {
+        $this->data = [];
+
+        $this->logger->reset();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'sphinx';
