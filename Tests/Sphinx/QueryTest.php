@@ -68,6 +68,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->option('agent_query_timeout', 10000)
             ->option('max_matches', 1000)
             ->option('field_weights', '(column9=10, column10=3)')
+            ->facet('column1 AS min_column1 ORDER BY FACET() ASC LIMIT 1')
+            ->facet('column2', 'column_alias')
             ->getQuery();
 
         $expectedSql = 'SELECT id, column1, column2, WEIGHT() as weight'
@@ -83,7 +85,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             . ' HAVING weight > 2'
             . ' ORDER BY column15 DESC, column16 ASC'
             . ' LIMIT 5, 10'
-            . ' OPTION agent_query_timeout = 10000, max_matches = 1000, field_weights = (column9=10, column10=3)';
+            . ' OPTION agent_query_timeout = 10000, max_matches = 1000, field_weights = (column9=10, column10=3)'
+            . ' FACET column1 AS min_column1 ORDER BY FACET() ASC LIMIT 1'
+            . ' FACET column2';
 
         $this->assertEquals($expectedSql, $actualSql);
     }
