@@ -99,13 +99,4 @@ class SphinxDataCollector extends DataCollector
     {
         return 'sphinx';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
-    {
-        $this->logger->reset();
-        $this->data = [];
-    }
 }
