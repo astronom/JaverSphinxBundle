@@ -22,7 +22,7 @@
             </div>
         {% endset %}
 
-        {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url, status: '' } %}
+        {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url, status: '' } %}
     {% elseif collector.queriesCount > 0 %}
         {% set icon %}
             {{ include('@JaverSphinx/Collector/icon.html.twig') }}
@@ -47,7 +47,7 @@
             </div>
         {% endset %}
 
-        {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url, status: '' } %}
+        {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url, status: '' } %}
     {% endif %}
 {% endblock %}
 
